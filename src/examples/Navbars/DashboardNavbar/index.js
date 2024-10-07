@@ -36,6 +36,7 @@ import SoftInput from "components/SoftInput";
 // Soft UI Dashboard React examples
 import Breadcrumbs from "examples/Breadcrumbs";
 import NotificationItem from "examples/Items/NotificationItem";
+import { useNavigate } from "react-router-dom";
 
 // Custom styles for DashboardNavbar
 import {
@@ -64,7 +65,15 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
+      // If token exists, redirect to the dashboard
+      // navigate("authentication/sign-in");
+    }
+  }, [navigate]);
   useEffect(() => {
     // Setting the navbar type
     if (fixedNavbar) {
@@ -167,6 +176,11 @@ function DashboardNavbar({ absolute, light, isMini }) {
                     variant="button"
                     fontWeight="medium"
                     color={light ? "white" : "dark"}
+                    onClick={() => {
+                      localStorage.removeItem("accessToken");
+                      localStorage.removeItem("refreshToken");
+                      navigate("/dashboard");
+                    }}
                   >
                     Log Out
                   </SoftTypography>
