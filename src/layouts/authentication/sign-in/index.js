@@ -1,35 +1,14 @@
-/**
-=========================================================
-* Soft UI Dashboard React - v4.0.1
-=========================================================
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axiosInstance from "AxiosInstance.js"; // Import the axios instance
+import { toast } from "react-toastify"; // Import toast
 
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-import { useState } from "react";
-import axios from "axios";
-import { Link} from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
-
-// react-router-dom components
-
-// @mui material components
+// Material UI components
 import Switch from "@mui/material/Switch";
-
-// Soft UI Dashboard React components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import SoftInput from "components/SoftInput";
 import SoftButton from "components/SoftButton";
-
-// Authentication layout components
 import CoverLayout from "layouts/authentication/components/CoverLayout";
 
 // Images
@@ -42,46 +21,45 @@ function SignIn() {
   const [error, setError] = useState(null);
   const navigate = useNavigate(); // To redirect on successful login
 
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      // If token exists, redirect to the dashboard
+      navigate("/dashboard");
+    }
+  }, [navigate]);
+
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Data object to send in the request
-    const loginData = {
-      email: email,
-      password: password,
-    };
+    const loginData = { email, password };
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/login/", loginData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      // Assuming the response contains a token (or any response)
-      console.log(response.data);
-
-      // Handle successful login, e.g., redirect to dashboard
-      if (response.status === 200) {
-        // You can save the token in local storage or state management
-        localStorage.setItem("token", response.data.token);
-
-        // Redirect to a protected route (dashboard, etc.)
-        navigate("/dashboard");
+      const response = await axiosInstance.post("/auth/login/", loginData);
+      console.log(response, "response");
+      if (response.status === 401 && !originalRequest._retry) {
+        originalRequest._retry = true;
+        toast.error("Invalid email or password.");
+        
       }
+      // Save the access and refresh tokens
+      localStorage.setItem("accessToken", response.data.access);
+      localStorage.setItem("refreshToken", response.data.refresh);
+
+      // Redirect to /redirect on successful login
+      navigate("/redirect");
+
     } catch (error) {
-      console.error("There was an error!", error.response);
-      setError("Invalid email or password");
+      console.log("Sss")
+     
+      toast.error("Invalid email or password.");
     }
   };
 
   return (
-    <CoverLayout
-      title="Welcome back"
-      image={curved9}
-    >
+    <CoverLayout title="Welcome back" image={curved9}>
       <SoftBox component="form" role="form" onSubmit={handleSubmit}>
         <SoftBox mb={2}>
           <SoftBox mb={1} ml={0.5}>
@@ -89,12 +67,12 @@ function SignIn() {
               Email
             </SoftTypography>
           </SoftBox>
-          <SoftInput 
-              type="email"
-              placeholder="Email" 
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required 
+          <SoftInput
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
           />
         </SoftBox>
         <SoftBox mb={2}>
