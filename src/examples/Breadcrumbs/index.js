@@ -75,7 +75,7 @@ function Breadcrumbs({ icon, title, route, light }) {
           {title.replace("-", " ")}
         </SoftTypography>
       </MuiBreadcrumbs>
-      <SoftTypography
+      {/* <SoftTypography
         fontWeight="bold"
         textTransform="capitalize"
         variant="h6"
@@ -83,7 +83,7 @@ function Breadcrumbs({ icon, title, route, light }) {
         noWrap
       >
         {title.replace("-", " ")}
-      </SoftTypography>
+      </SoftTypography> */}
     </SoftBox>
   );
 }
@@ -96,7 +96,7 @@ Breadcrumbs.defaultProps = {
 // Typechecking props for the Breadcrumbs
 Breadcrumbs.propTypes = {
   icon: PropTypes.node.isRequired,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   route: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
   light: PropTypes.bool,
 };

@@ -47,8 +47,9 @@ import SignUp from "layouts/authentication/sign-up";
 
 // Soft UI Dashboard React icons
 import Shop from "examples/Icons/Shop";
-import Office from "examples/Icons/Office";
 import Settings from "examples/Icons/Settings";
+import Office from "examples/Icons/Office";
+// import Settings from "examples/Icons/Settings";
 import Document from "examples/Icons/Document";
 import SpaceShip from "examples/Icons/SpaceShip";
 import CustomerSupport from "examples/Icons/CustomerSupport";
@@ -62,6 +63,15 @@ const routes = [
     key: "dashboard",
     route: "/dashboard",
     icon: <Shop size="12px" />,
+    component: <Dashboard />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "WSUS Connector",
+    key: "WSUS Connector",
+    route: "/wsus-connector",
+    icon: <Settings size="12px" />,
     component: <Dashboard />,
     noCollapse: true,
   },

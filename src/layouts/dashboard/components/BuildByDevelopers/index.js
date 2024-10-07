@@ -33,15 +33,15 @@ import rocketWhite from "assets/images/illustrations/rocket-white.png";
 function BuildByDevelopers() {
   return (
     <Card>
-      <SoftBox p={1} ml={5} mr={5}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} lg={10}>
-            <SoftBox display="flex" flexDirection="column" height="100%">
-              <SoftTypography mb={3} mt={2} variant="h5" fontWeight="bold" gutterBottom>
+      <SoftBox>
+        <Grid >
+          <Grid >
+            <SoftBox>
+              <SoftTypography mb={2} mt={3} ml={3} variant="h6" fontWeight="bold" gutterBottom>
                 Add Tenant Details
               </SoftTypography>
-              <SoftBox mb={4}>
-              <form>
+              <SoftBox mb={4} ml={3} mr={3}>
+              <form >
                 <SoftBox mb={3}>
                 <SoftInput
                     name="name"
@@ -70,7 +70,7 @@ function BuildByDevelopers() {
                     required
                   />
                 </SoftBox>
-                <SoftButton type="submit" variant="contained" color="default">
+                <SoftButton type="submit" variant="gradient" color="success">
                   Submit
                 </SoftButton>
               </form>
