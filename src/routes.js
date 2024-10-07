@@ -44,11 +44,13 @@ import RTL from "layouts/rtl";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
+import ProtectedRoute from "layouts/authentication/protected-route";
 
 // Soft UI Dashboard React icons
 import Shop from "examples/Icons/Shop";
 import Settings from "examples/Icons/Settings";
 import Office from "examples/Icons/Office";
+
 // import Settings from "examples/Icons/Settings";
 import Document from "examples/Icons/Document";
 import SpaceShip from "examples/Icons/SpaceShip";
@@ -63,7 +65,11 @@ const routes = [
     key: "dashboard",
     route: "/dashboard",
     icon: <Shop size="12px" />,
-    component: <Dashboard />,
+    component: (
+      <ProtectedRoute>
+        <Dashboard />
+      </ProtectedRoute>
+    ),
     noCollapse: true,
   },
   {
@@ -72,7 +78,11 @@ const routes = [
     key: "WSUS Connector",
     route: "/wsus-connector",
     icon: <Settings size="12px" />,
-    component: <Dashboard />,
+    component:(
+      <ProtectedRoute>
+        <Dashboard />
+      </ProtectedRoute>
+    ),
     noCollapse: true,
   },
   // {

@@ -5,6 +5,7 @@ import { toast } from "react-toastify"; // Import toast
 
 // Material UI components
 import Switch from "@mui/material/Switch";
+import SoftAlert from "components/SoftAlert";
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import SoftInput from "components/SoftInput";
@@ -39,28 +40,30 @@ function SignIn() {
     try {
       const response = await axiosInstance.post("/auth/login/", loginData);
       console.log(response, "response");
-      if (response.status === 401 && !originalRequest._retry) {
-        originalRequest._retry = true;
+
+      if (response.status === 200) {
+        // Save the access and refresh tokens
+        localStorage.setItem("accessToken", response.data.access);
+        // localStorage.setItem("refreshToken", response.data.refresh);
+
+        // Redirect to /redirect on successful login
+        navigate("/redirect");
+      } else {
+        // Handle other status codes (e.g., 401 Unauthorized)
         toast.error("Invalid email or password.");
-        
+        setError("Invalid email or password.");
       }
-      // Save the access and refresh tokens
-      localStorage.setItem("accessToken", response.data.access);
-      localStorage.setItem("refreshToken", response.data.refresh);
-
-      // Redirect to /redirect on successful login
-      navigate("/redirect");
-
     } catch (error) {
-      console.log("Sss")
-     
+      // Set the error message on failure
       toast.error("Invalid email or password.");
+      setError("Invalid email or password.");
     }
   };
 
   return (
     <CoverLayout title="Welcome back" image={curved9}>
       <SoftBox component="form" role="form" onSubmit={handleSubmit}>
+        {/* {error && <SoftAlert severity="error" color="error" dismissible="true">{error}</SoftAlert>} */}
         <SoftBox mb={2}>
           <SoftBox mb={1} ml={0.5}>
             <SoftTypography component="label" variant="caption" fontWeight="bold">
@@ -126,3 +129,4 @@ function SignIn() {
 }
 
 export default SignIn;
+export { SignIn };
