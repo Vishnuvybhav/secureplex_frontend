@@ -179,7 +179,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                     onClick={() => {
                       localStorage.removeItem("accessToken");
                       localStorage.removeItem("refreshToken");
-                      navigate("/dashboard");
+                      navigate("/authentication/sign-in");
                     }}
                   >
                     Log Out

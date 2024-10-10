@@ -45,6 +45,8 @@ import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 import ProtectedRoute from "layouts/authentication/protected-route";
+import WsusConnector from "layouts/wsus-connector/components";
+import WsusConnectorform from "layouts/wsus-connector";
 
 // Soft UI Dashboard React icons
 import Shop from "examples/Icons/Shop";
@@ -74,17 +76,70 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "WSUS Connector",
+    name: "WSUS Connection",
     key: "WSUS Connector",
     route: "/wsus-connector",
     icon: <Settings size="12px" />,
     component:(
       <ProtectedRoute>
-        <Dashboard />
+        <WsusConnectorform />
       </ProtectedRoute>
     ),
     noCollapse: true,
   },
+  {
+    type: "collapse",
+    name: "Gateway Actions",
+    key: "Gateway Actions",
+    route: "/gateway-actions",
+    icon: <Office size="12px" />,
+    component:(
+      <ProtectedRoute>
+        <WsusConnectorform />
+      </ProtectedRoute>
+    ),
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Manage Users",
+    key: "Manage Users",
+    route: "/manage-users",
+    icon: <CustomerSupport size="12px" />,
+    component:(
+      <ProtectedRoute>
+        <WsusConnectorform />
+      </ProtectedRoute>
+    ),
+    noCollapse: true,
+  },
+  // {
+  //   type: "collapse",
+  //   name: "Manage Users",
+  //   key: "Manage Users",
+  //   route: "/manage-users",
+  //   icon: <Settings size="12px" />,
+  //   component:(
+  //     <ProtectedRoute>
+  //       <WsusConnectorform />
+  //     </ProtectedRoute>
+  //   ),
+  //   noCollapse: true,
+  // },
+  {
+    type: "collapse",
+    name: "Tenant Dashboard",
+    key: "Tenant Dashboard",
+    route: "/tenant-dashboard",
+    icon: <Cube size="12px" />,
+    component:(
+      <ProtectedRoute>
+        <WsusConnectorform />
+      </ProtectedRoute>
+    ),
+    noCollapse: true,
+  },
+  
   // {
   //   type: "collapse",
   //   name: "Tables",
@@ -131,23 +186,34 @@ const routes = [
   //   component: <Profile />,
   //   noCollapse: true,
   // },
+  // {
+  //   type: "collapse",
+  //   name: "Sign In",
+  //   key: "sign-in",
+  //   route: "/authentication/sign-in",
+  //   icon: <Document size="12px" />,
+  //   component: <SignIn />,
+  //   noCollapse: true,
+  // },
+  // {
+  //   type: "collapse",
+  //   name: "Sign Up",
+  //   key: "sign-up",
+  //   route: "/authentication/sign-up",
+  //   icon: <SpaceShip size="12px" />,
+  //   component: <SignUp />,
+  //   noCollapse: true,
+  // },
+];
+
+export const authRoutes = [
   {
-    type: "collapse",
-    name: "Sign In",
-    key: "sign-in",
     route: "/authentication/sign-in",
-    icon: <Document size="12px" />,
     component: <SignIn />,
-    noCollapse: true,
   },
   {
-    type: "collapse",
-    name: "Sign Up",
-    key: "sign-up",
     route: "/authentication/sign-up",
-    icon: <SpaceShip size="12px" />,
     component: <SignUp />,
-    noCollapse: true,
   },
 ];
 

@@ -11,7 +11,7 @@ import SoftTypography from "components/SoftTypography";
 import SoftInput from "components/SoftInput";
 import SoftButton from "components/SoftButton";
 import CoverLayout from "layouts/authentication/components/CoverLayout";
-
+import { Alert } from '@mui/material';
 // Images
 import curved9 from "assets/images/curved-images/curved-6.jpg";
 
@@ -50,12 +50,12 @@ function SignIn() {
         navigate("/redirect");
       } else {
         // Handle other status codes (e.g., 401 Unauthorized)
-        toast.error("Invalid email or password.");
+        // toast.error("Invalid email or password.");
         setError("Invalid email or password.");
       }
     } catch (error) {
       // Set the error message on failure
-      toast.error("Invalid email or password.");
+      // toast.error("Invalid email or password.");
       setError("Invalid email or password.");
     }
   };
@@ -64,6 +64,7 @@ function SignIn() {
     <CoverLayout title="Welcome back" image={curved9}>
       <SoftBox component="form" role="form" onSubmit={handleSubmit}>
         {/* {error && <SoftAlert severity="error" color="error" dismissible="true">{error}</SoftAlert>} */}
+        {error && <Alert severity="error">{error}</Alert>}
         <SoftBox mb={2}>
           <SoftBox mb={1} ml={0.5}>
             <SoftTypography component="label" variant="caption" fontWeight="bold">
@@ -93,7 +94,7 @@ function SignIn() {
           />
         </SoftBox>
         <SoftBox display="flex" alignItems="center">
-          <Switch checked={rememberMe} onChange={handleSetRememberMe} />
+          {/* <Switch checked={rememberMe} onChange={handleSetRememberMe} />
           <SoftTypography
             variant="button"
             fontWeight="regular"
@@ -101,7 +102,7 @@ function SignIn() {
             sx={{ cursor: "pointer", userSelect: "none" }}
           >
             &nbsp;&nbsp;Remember me
-          </SoftTypography>
+          </SoftTypography> */}
         </SoftBox>
         <SoftBox mt={4} mb={1}>
           <SoftButton type="submit" variant="gradient" color="info" fullWidth>
@@ -109,7 +110,7 @@ function SignIn() {
           </SoftButton>
         </SoftBox>
         <SoftBox mt={3} textAlign="center">
-          <SoftTypography variant="button" color="text" fontWeight="regular">
+          {/* <SoftTypography variant="button" color="text" fontWeight="regular">
             Don&apos;t have an account?{" "}
             <SoftTypography
               component={Link}
@@ -121,7 +122,7 @@ function SignIn() {
             >
               Sign up
             </SoftTypography>
-          </SoftTypography>
+          </SoftTypography> */}
         </SoftBox>
       </SoftBox>
     </CoverLayout>

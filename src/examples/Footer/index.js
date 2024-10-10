@@ -35,9 +35,9 @@ function Footer({ company, links }) {
     links.map((link) => (
       <SoftBox key={link.name} component="li" px={2} lineHeight={1}>
         <Link href={link.href} target="_blank">
-          <SoftTypography variant="button" fontWeight="regular" color="text">
+          {/* <SoftTypography variant="button" fontWeight="regular" color="text">
             {link.name}
-          </SoftTypography>
+          </SoftTypography> */}
         </Link>
       </SoftBox>
     ));

@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Navigate } from "react-router-dom";
+import PropTypes from 'prop-types'
 // import { isAuthenticated } from "./auth"; // Import your auth function
 
 export const isAuthenticated = () => {

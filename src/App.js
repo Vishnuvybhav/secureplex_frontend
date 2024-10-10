@@ -1,18 +1,3 @@
-/**
-=========================================================
-* Soft UI Dashboard React - v4.0.1
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { useState, useEffect, useMemo } from "react";
 
 // react-router components
@@ -40,7 +25,7 @@ import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 
 // Soft UI Dashboard React routes
-import routes from "routes";
+import routes, { authRoutes } from "routes";
 
 // Soft UI Dashboard React contexts
 import { useSoftUIController, setMiniSidenav, setOpenConfigurator } from "context";
@@ -97,6 +82,10 @@ export default function App() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
+
+  const visibleRoutes = routes.filter(
+    (route) => route.key !== "sign-in" && route.key !== "sign-up"
+  );
 
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
@@ -156,7 +145,7 @@ export default function App() {
               color={sidenavColor}
               brand={brand}
               brandName="AttackBox"
-              routes={routes}
+              routes={visibleRoutes} 
               onMouseEnter={handleOnMouseEnter}
               onMouseLeave={handleOnMouseLeave}
             />
@@ -166,7 +155,14 @@ export default function App() {
         )}
         {layout === "vr" && <Configurator />}
         <Routes>
-          {getRoutes(routes)}
+        {getRoutes(routes)} {/* Render all routes */}
+          {authRoutes.map((authRoute) => (
+            <Route
+              key={authRoute.route}
+              path={authRoute.route}
+              element={authRoute.component}
+            />
+          ))}
           <Route path="*" element={<Navigate to="/dashboard" />} />
         </Routes>
       </ThemeProvider>
@@ -191,7 +187,7 @@ export default function App() {
             color={sidenavColor}
             brand={brand}
             brandName="AttackBox"
-            routes={routes}
+            routes={visibleRoutes}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
           />
@@ -201,7 +197,14 @@ export default function App() {
       )}
       {layout === "vr" && <Configurator />}
       <Routes>
-        {getRoutes(routes)}
+      {getRoutes(routes)} {/* Render all routes */}
+        {authRoutes.map((authRoute) => (
+          <Route
+            key={authRoute.route}
+            path={authRoute.route}
+            element={authRoute.component}
+          />
+        ))}
         <Route path="*" element={<Navigate to="/dashboard" />} />
       </Routes>
     </ThemeProvider>
