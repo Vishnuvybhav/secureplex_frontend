@@ -33,7 +33,7 @@ import SoftTypography from "components/SoftTypography";
 import colors from "assets/theme/base/colors";
 import typography from "assets/theme/base/typography";
 
-function ProfileInfoCard({ title, description, info, social, action }) {
+function ProfileInfoCard({ title, description, info, action }) {
   const labels = [];
   const values = [];
   const { socialMediaColors } = colors;
@@ -67,22 +67,22 @@ function ProfileInfoCard({ title, description, info, social, action }) {
   ));
 
   // Render the card social media icons
-  const renderSocial = social.map(({ link, icon, color }) => (
-    <SoftBox
-      key={color}
-      component="a"
-      href={link}
-      target="_blank"
-      rel="noreferrer"
-      fontSize={size.lg}
-      color={socialMediaColors[color].main}
-      pr={1}
-      pl={0.5}
-      lineHeight={1}
-    >
-      {icon}
-    </SoftBox>
-  ));
+  // const renderSocial = social.map(({ link, icon, color }) => (
+  //   <SoftBox
+  //     key={color}
+  //     component="a"
+  //     href={link}
+  //     target="_blank"
+  //     rel="noreferrer"
+  //     fontSize={size.lg}
+  //     color={socialMediaColors[color].main}
+  //     pr={1}
+  //     pl={0.5}
+  //     lineHeight={1}
+  //   >
+  //     {icon}
+  //   </SoftBox>
+  // ));
 
   return (
     <Card sx={{ height: "100%" }}>
@@ -90,29 +90,21 @@ function ProfileInfoCard({ title, description, info, social, action }) {
         <SoftTypography variant="h6" fontWeight="medium" textTransform="capitalize">
           {title}
         </SoftTypography>
-        <SoftTypography component={Link} to={action.route} variant="body2" color="secondary">
+        {/* <SoftTypography component={Link} to={action.route} variant="body2" color="secondary">
           <Tooltip title={action.tooltip} placement="top">
             <Icon>edit</Icon>
           </Tooltip>
-        </SoftTypography>
+        </SoftTypography> */}
       </SoftBox>
       <SoftBox p={2}>
-        <SoftBox mb={2} lineHeight={1}>
-          <SoftTypography variant="button" color="text" fontWeight="regular">
-            {description}
-          </SoftTypography>
-        </SoftBox>
-        <SoftBox opacity={0.3}>
-          <Divider />
-        </SoftBox>
         <SoftBox>
           {renderItems}
-          <SoftBox display="flex" py={1} pr={2}>
+          {/* <SoftBox display="flex" py={1} pr={2}>
             <SoftTypography variant="button" fontWeight="bold" textTransform="capitalize">
               social: &nbsp;
             </SoftTypography>
             {renderSocial}
-          </SoftBox>
+          </SoftBox> */}
         </SoftBox>
       </SoftBox>
     </Card>

@@ -63,10 +63,10 @@ function SpaceShip({ color, size }) {
 }
 
 // Setting default values for the props of SpaceShip
-SpaceShip.defaultProps = {
-  color: "dark",
-  size: "16px",
-};
+// SpaceShip.defaultProps = {
+//   color: "dark",
+//   size: "16px",
+// };
 
 // Typechecking props for the SpaceShip
 SpaceShip.propTypes = {

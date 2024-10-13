@@ -37,13 +37,13 @@ const SoftButton = forwardRef(
 );
 
 // Setting default values for the props of SoftButton
-SoftButton.defaultProps = {
-  size: "medium",
-  variant: "contained",
-  color: "white",
-  circular: false,
-  iconOnly: false,
-};
+// SoftButton.defaultProps = {
+//   size: "medium",
+//   variant: "contained",
+//   color: "white",
+//   circular: false,
+//   iconOnly: false,
+// };
 
 // Typechecking props for the SoftButton
 SoftButton.propTypes = {

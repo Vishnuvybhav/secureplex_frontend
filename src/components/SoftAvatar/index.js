@@ -26,11 +26,11 @@ const SoftAvatar = forwardRef(({ bgColor, size, shadow, ...rest }, ref) => (
 ));
 
 // Setting default values for the props of SoftAvatar
-SoftAvatar.defaultProps = {
-  bgColor: "transparent",
-  size: "md",
-  shadow: "none",
-};
+// SoftAvatar.defaultProps = {
+//   bgColor: "transparent",
+//   size: "md",
+//   shadow: "none",
+// };
 
 // Typechecking props for the SoftAvatar
 SoftAvatar.propTypes = {

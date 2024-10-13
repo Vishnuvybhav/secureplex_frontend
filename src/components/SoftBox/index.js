@@ -32,14 +32,14 @@ const SoftBox = forwardRef(
 );
 
 // Setting default values for the props of SoftBox
-SoftBox.defaultProps = {
-  variant: "contained",
-  bgColor: "transparent",
-  color: "dark",
-  opacity: 1,
-  borderRadius: "none",
-  shadow: "none",
-};
+// SoftBox.defaultProps = {
+//   variant: "contained",
+//   bgColor: "transparent",
+//   color: "dark",
+//   opacity: 1,
+//   borderRadius: "none",
+//   shadow: "none",
+// };
 
 // Typechecking props for the SoftBox
 SoftBox.propTypes = {

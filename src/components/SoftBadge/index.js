@@ -34,17 +34,17 @@ const SoftBadge = forwardRef(
   )
 );
 
-// Setting default values for the props of SoftBadge
-SoftBadge.defaultProps = {
-  color: "info",
-  variant: "gradient",
-  size: "sm",
-  circular: false,
-  indicator: false,
-  border: false,
-  children: false,
-  container: false,
-};
+// // Setting default values for the props of SoftBadge
+// SoftBadge.defaultProps = {
+//   color: "info",
+//   variant: "gradient",
+//   size: "sm",
+//   circular: false,
+//   indicator: false,
+//   border: false,
+//   children: false,
+//   container: false,
+// };
 
 // Typechecking props of the SoftBadge
 SoftBadge.propTypes = {

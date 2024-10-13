@@ -145,10 +145,10 @@ function Table({ columns, rows }) {
 }
 
 // Setting default values for the props of Table
-Table.defaultProps = {
-  columns: [],
-  rows: [{}],
-};
+// Table.defaultProps = {
+//   columns: [],
+//   rows: [{}],
+// };
 
 // Typechecking props for the Table
 Table.propTypes = {

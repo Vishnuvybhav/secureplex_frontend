@@ -37,6 +37,8 @@ Coded by www.creative-tim.com
 
 // Soft UI Dashboard React layouts
 import Dashboard from "layouts/dashboard";
+import CreateTenantUser from "layouts/manage-users";
+import CreateTenantGateway from "layouts/gateway-actions";
 import Tables from "layouts/tables";
 import Billing from "layouts/billing";
 import VirtualReality from "layouts/virtual-reality";
@@ -61,6 +63,24 @@ import CreditCard from "examples/Icons/CreditCard";
 import Cube from "examples/Icons/Cube";
 
 const routes = [
+  {
+    type: "collapse",
+    name: "Profile",
+    key: "profile",
+    route: "/profile",
+    icon: <CustomerSupport size="12px" />,
+    component: <Profile />,
+    noCollapse: true,
+  },
+  // {
+  //   type: "collapse",
+  //   name: "test",
+  //   key: "profile",
+  //   route: "/profile",
+  //   icon: <CustomerSupport size="12px" />,
+  //   component: <Profile />,
+  //   noCollapse: true,
+  // },
   {
     type: "collapse",
     name: "Manage Tenants",
@@ -89,10 +109,23 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Gateway Actions",
-    key: "Gateway Actions",
-    route: "/gateway-actions",
-    icon: <Office size="12px" />,
+    name: "Manage Users",
+    key: "Manage Users",
+    route: "/manage-users",
+    icon: <CustomerSupport size="12px" />,
+    component:(
+      <ProtectedRoute>
+        <CreateTenantUser />
+      </ProtectedRoute>
+    ),
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "KB Verification",
+    key: "KB Verification",
+    route: "/kb-verification",
+    icon: <Settings size="12px" />,
     component:(
       <ProtectedRoute>
         <WsusConnectorform />
@@ -102,30 +135,17 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Manage Users",
-    key: "Manage Users",
-    route: "/manage-users",
-    icon: <CustomerSupport size="12px" />,
+    name: "Gateway Actions",
+    key: "Gateway Actions",
+    route: "/gateway-actions",
+    icon: <Office size="12px" />,
     component:(
       <ProtectedRoute>
-        <WsusConnectorform />
+        <CreateTenantGateway />
       </ProtectedRoute>
     ),
     noCollapse: true,
   },
-  // {
-  //   type: "collapse",
-  //   name: "Manage Users",
-  //   key: "Manage Users",
-  //   route: "/manage-users",
-  //   icon: <Settings size="12px" />,
-  //   component:(
-  //     <ProtectedRoute>
-  //       <WsusConnectorform />
-  //     </ProtectedRoute>
-  //   ),
-  //   noCollapse: true,
-  // },
   {
     type: "collapse",
     name: "Tenant Dashboard",
@@ -139,6 +159,7 @@ const routes = [
     ),
     noCollapse: true,
   },
+  
   
   // {
   //   type: "collapse",
@@ -177,15 +198,7 @@ const routes = [
   //   noCollapse: true,
   // },
   // { type: "title", title: "Account Pages", key: "account-pages" },
-  // {
-  //   type: "collapse",
-  //   name: "Profile",
-  //   key: "profile",
-  //   route: "/profile",
-  //   icon: <CustomerSupport size="12px" />,
-  //   component: <Profile />,
-  //   noCollapse: true,
-  // },
+ 
   // {
   //   type: "collapse",
   //   name: "Sign In",

@@ -57,10 +57,10 @@ function Shop({ color, size }) {
 }
 
 // Setting default values for the props of Shop
-Shop.defaultProps = {
-  color: "dark",
-  size: "16px",
-};
+// Shop.defaultProps = {
+//   color: "dark",
+//   size: "16px",
+// };
 
 // Typechecking props for the Shop
 Shop.propTypes = {
