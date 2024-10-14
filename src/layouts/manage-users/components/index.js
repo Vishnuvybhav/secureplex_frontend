@@ -4,9 +4,7 @@ import Grid from "@mui/material/Grid";
 import Icon from "@mui/material/Icon";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-// import axios from "axios";
-import axiosInstance from "AxiosInstance.js";
-// import * as React from 'react';
+import axiosInstance from "AxiosInstance.js";  // Import your axios instance
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormHelperText from '@mui/material/FormHelperText';
@@ -14,20 +12,28 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputAdornment from '@mui/material/InputAdornment';
 import OutlinedInput from '@mui/material/OutlinedInput';
-// Soft UI Dashboard React components
-import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
-import SoftInput from "components/SoftInput";
-import SoftSelect from "components/SoftSelect";
-import SoftButton from "components/SoftButton";
 import { Alert } from '@mui/material';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 
+// Soft UI Dashboard React components
+import SoftBox from "components/SoftBox";
+import SoftTypography from "components/SoftTypography";
+import SoftInput from "components/SoftInput";
+import SoftButton from "components/SoftButton";
 
 function CreateProfile() {
-    const fileInputRef = useRef(null);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [gender, setGender] = useState('');
+  const [role, setRole] = useState('');
+  const [phone, setPhone] = useState('');
+  const [countryCode, setCountryCode] = useState('us');  // default country code
+  const [message, setMessage] = useState(null);
+  const [alertType, setAlertType] = useState('success');
+  const fileInputRef = useRef(null);
 
+  // Handle file selection (for bulk import)
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -35,31 +41,42 @@ function CreateProfile() {
       // Handle file upload or processing here
     }
   };
-  const [age, setAge] = React.useState('');
-  const [gender, setGender] = useState('');
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
-
-  const handlegenderChange = (event) => {
-    setGender(event.target.value);
+  const handleSubmit = (event) => {
+    event.preventDefault();  // Prevent page reload on form submission
+    
+    // Create data object to send
+    const userData = {
+      name: name,
+      email: email,
+      gender: gender === 10 ? 'male' : 'female',
+      phone: phone,
+      country_code: countryCode,
+      role: role,
     };
 
-
-  const handleButtonClick = () => {
-    // Programmatically trigger the file input click
-    fileInputRef.current.click();
+    // Make POST request using axiosInstance
+    axiosInstance.post("/user/create/", userData)
+      .then((response) => {
+        setMessage("Profile created successfully!");
+        setAlertType('success');
+        console.log("Response:", response.data);
+      })
+      .catch((error) => {
+        setMessage("Error creating profile. Please try again.");
+        setAlertType('error');
+        console.error("Error:", error);
+      });
   };
 
   return (
     <Card>
       <SoftBox>
-        {/* {message && (
-          <Alert mt={2} severity="success">
+        {message && (
+          <Alert mt={2} severity={alertType}>
             {message}
           </Alert>
-        )} */}
+        )}
         <Grid>
           <Grid>
             <SoftBox>
@@ -68,7 +85,7 @@ function CreateProfile() {
                   Create User Profile
                 </SoftTypography>
                 <SoftBox mr={3}>
-                    <SoftButton variant="gradient" color="info" size="small" onClick={handleButtonClick}>
+                    <SoftButton variant="gradient" color="info" size="small" onClick={() => fileInputRef.current.click()}>
                         Bulk User Import
                     </SoftButton>
                     <input
@@ -81,7 +98,7 @@ function CreateProfile() {
                 </SoftBox>  
               </SoftBox>
               <SoftBox mb={4} ml={3} mr={3}>
-                <form>
+                <form onSubmit={handleSubmit}>
                   <Grid container spacing={2}>
                     {/* First Row: Name and Email */}
                     <Grid item xs={12} md={6}>
@@ -90,6 +107,8 @@ function CreateProfile() {
                         placeholder="Name"
                         icon={{ component: <Icon>person</Icon>, direction: "left" }}
                         size="medium"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
                         required
                       />
                     </Grid>
@@ -100,30 +119,28 @@ function CreateProfile() {
                         type="email"
                         icon={{ component: <Icon>email</Icon>, direction: "left" }}
                         size="medium"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         required
                       />
                     </Grid>
                   </Grid>
 
                   <Grid container spacing={2} mt={2}>
-                    {/* Second Row: Phone and Date */}
+                    {/* Second Row: Role and Gender */}
                     <Grid item xs={12} md={6}>
                     <FormControl fullWidth>
                       <Select
-                          value={age}
-                          onChange={handleChange}
+                          value={role}
+                          onChange={(e) => setRole(e.target.value)}
                           displayEmpty
-                          input={<OutlinedInput
-                            startAdornment={
-                                <Icon>work</Icon>
-                            }
-                          />}
+                          input={<OutlinedInput startAdornment={<Icon>work</Icon>} />}
                         >
                           <MenuItem value="">
-                          <span style={{ color: '#A9A9A9' }}>Role</span>
+                            <span style={{ color: '#A9A9A9' }}>Role</span>
                           </MenuItem>
-                          <MenuItem value={10}>Analyst</MenuItem>
-                          <MenuItem value={20}>Genral User</MenuItem>
+                          <MenuItem value="Analyst">Analyst</MenuItem>
+                          <MenuItem value="user">General User</MenuItem>
                         </Select>
                       </FormControl>
                     </Grid>
@@ -131,42 +148,33 @@ function CreateProfile() {
                     <FormControl fullWidth>
                       <Select
                           value={gender}
-                          onChange={handlegenderChange}
+                          onChange={(e) => setGender(e.target.value)}
                           displayEmpty
-                          input={<OutlinedInput
-                            startAdornment={
-                                <Icon sx={{ fontSize: 50 }}>wc</Icon>
-                            }
-                          />}
+                          input={<OutlinedInput startAdornment={<Icon sx={{ fontSize: 50 }}>wc</Icon>} />}
                         >
                           <MenuItem value="">
-                          <span style={{ color: '#A9A9A9' }}>Gender</span> 
+                            <span style={{ color: '#A9A9A9' }}>Gender</span>
                           </MenuItem>
                           <MenuItem value={10}>Male</MenuItem>
                           <MenuItem value={20}>Female</MenuItem>
                         </Select>
                       </FormControl>
-                      {/* <SoftInput
-                        name="gender"
-                        placeholder="Gender"
-                        type="text"
-                        icon={{ component: <Icon>wc</Icon>, direction: "left" }}
-                        size="medium"
-                        required
-                      /> */}
                     </Grid>
                   </Grid>
+
+                  {/* Third Row: Phone Input */}
                   <Grid container spacing={2} mt={2}>
                     <Grid item xs={12} md={6}>
-                    <PhoneInput
-                            country={'us'}  // Set the default country
-                            // value={phone}
-                            // onChange={phone => setPhone(phone)}  // Handle phone number change
-                            inputStyle={{ width: '100%' }}  // Full-width input field
-                            containerStyle={{ marginBottom: '20px' }}
-                        />
+                      <PhoneInput
+                          country={countryCode}  // Set the default country
+                          value={phone}
+                          onChange={(phone) => setPhone(phone)}  // Handle phone number change
+                          inputStyle={{ width: '100%' }}  // Full-width input field
+                          containerStyle={{ marginBottom: '20px' }}
+                      />
                     </Grid>
-                 </Grid>
+                  </Grid>
+
                   <SoftBox mt={1}>
                     <SoftButton type="submit" variant="gradient" color="success">
                       Create Profile

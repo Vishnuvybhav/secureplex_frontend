@@ -16,7 +16,6 @@ function CreateTenantUser() {
     <DashboardNavbar />
       <SoftBox justifyContent="center" alignItems="center" mb={3} mt={2}>
         <Grid >
-         {/* <h1>hii</h1> */}
          <CreateProfile></CreateProfile>
         </Grid>
       </SoftBox>

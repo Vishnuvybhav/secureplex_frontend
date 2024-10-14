@@ -14,31 +14,39 @@ function TenantTable() {
   const [selectedTenant, setSelectedTenant] = useState(null);  // To store the tenant data for editing
   const [editedTenant, setEditedTenant] = useState(null);  // To store edited values before saving
   const [message, setMessage] = useState(null);
-  const [showAlert, setShowAlert] = useState(true);
+  const [showAlert, setShowAlert] = useState(false);  // Default to false
   const [alertType, setAlertType] = useState('success');
 
-  // Fetch tenant data from Django API using axiosInstance
-  useEffect(() => {
+  // Function to fetch tenant data
+  const fetchTenants = () => {
     axiosInstance
       .get("/tenant/")  // No need to include base URL here; it's already defined in axiosInstance
       .then((response) => {
-        setTenants(response.data.tenants);  // Assuming data is in response.data.tenants
+        console.log("Fetched tenants:", response.data);
+        setTenants(response.data || []); 
       })
       .catch((error) => {
         console.error("There was an error fetching the tenants!", error);
       });
+  };
+
+  // Fetch tenants on component mount
+  useEffect(() => {
+    fetchTenants();  // Fetch tenants when component mounts
   }, []);
 
   useEffect(() => {
     if (message) {
+      setShowAlert(true);  // Show the alert when message changes
+
       const timer = setTimeout(() => {
-        setShowAlert(false);
+        setShowAlert(false);  // Hide after 3 seconds
+        setMessage(null);  // Clear the message after alert hides
       }, 3000);
 
       return () => clearTimeout(timer);
     }
-  }, [message]);
-
+  }, [message]);  // Depend on message to trigger alert behavior
 
   // Handle Edit button click
   const handleEditClick = (tenant) => {
@@ -56,25 +64,26 @@ function TenantTable() {
 
   // Handle the "Save" button click
   const handleSave = () => {
+    console.log("Saving tenant...", editedTenant);
+    
+    // Ensure domains array exists and has at least one element
     const updatedData = {
       name: editedTenant.name,
-      tenant_domain: editedTenant.domains.length > -1 ? editedTenant.domains[0].domain : "N/A",
+      tenant_domain: editedTenant?.domains?.length > 0 ? editedTenant.domains[0].domain : "N/A",
       is_active: editedTenant.is_active,
-      domain: "localhost",  // For example, extra data you want to send along
+      domain: "localhost",  // Example extra data you want to send along
     };
 
     axiosInstance
       .patch(`/tenant/${editedTenant.id}/`, updatedData)
       .then((response) => {
-        // Update tenants list with the saved tenant data
-        const updatedTenants = tenants.map((tenant) =>
-          tenant.id === editedTenant.id ? response.data : tenant
-        );
-        setTenants(updatedTenants);
         setMessage("Tenant updated successfully!");
         setAlertType('success');
         console.log("Updated Tenant:", response.data);
         handleClose();  // Close the modal after saving
+
+        // Fetch tenants again after the update
+        fetchTenants();
       })
       .catch((error) => {
         setMessage("Error updating tenant. Please try again.");
@@ -87,11 +96,11 @@ function TenantTable() {
   // Prepare rows for the table
   const rows = tenants.map((tenant) => ({
     name: tenant.name,
-    Domain: tenant.domains.length > 0 ? tenant.domains[0].domain : "N/A",
-    email: tenant.email,
+    Domain: tenant?.domains?.length > 0 ? tenant.domains[0].domain : "N/A",  // Ensure domains exists
+    email: tenant?.admin?.length > 0 ? tenant.admin[0].user.email : "N/A",  // Safely access email from admin
     is_active: tenant.is_active ? "Active" : "Inactive",
     action: (
-      <SoftBox display="flex" justifyContent="center" gap={1}>
+      <SoftBox display="flex" justifyContent="center">
         <SoftButton color="secondary" variant="gradient" onClick={() => handleEditClick(tenant)}>
           Edit
         </SoftButton>
@@ -108,8 +117,8 @@ function TenantTable() {
         )}
       <Table
         columns={[
-          { name: "name", align: "left" },
-          { name: "Domain", align: "left" },
+          { name: "name", align: "center" },
+          { name: "Domain", align: "center" },
           { name: "email", align: "center" },
           { name: "is_active", align: "center" },
           { name: "action", align: "center" },
@@ -142,11 +151,13 @@ function TenantTable() {
                     placeholder="Domain"
                     icon={{ component: <Icon>public</Icon>, direction: "left" }}
                     size="medium"
-                    value={editedTenant.domains.length >   0 ? editedTenant.domains[0].domain : "N/A"}
+                    value={editedTenant?.domains?.length >  0 ? editedTenant.domains[0].domain : "N/A"}
                     onChange={(e) => {
-                      // const updatedDomains = [...editedTenant.domains];
-                      // updatedDomains[0].domain = e.target.value;
-                      setEditedTenant({ ...editedTenant, domains: e.target.value });
+                      const updatedDomains = [...(editedTenant.domains || [])];  // Update domains array correctly
+                      if (updatedDomains.length > 0) {
+                        updatedDomains[0].domain = e.target.value;  // Modify first domain
+                      }
+                      setEditedTenant({ ...editedTenant, domains: updatedDomains });
                     }}
                     required
                   />
@@ -155,7 +166,7 @@ function TenantTable() {
                 <FormControlLabel
                   control={
                     <Switch
-                      checked={editedTenant.is_active}  // Checked if active
+                      checked={!!editedTenant?.is_active}   // Checked if active
                       onChange={(e) =>
                         setEditedTenant({ ...editedTenant, is_active: e.target.checked })  // Toggle state
                       }

@@ -71,16 +71,16 @@ const SoftInput = forwardRef(({ size, icon, error, success, disabled, ...rest },
 });
 
 // Setting default values for the props of SoftInput
-// SoftInput.defaultProps = {
-//   size: "medium",
-//   icon: {
-//     component: false,
-//     direction: "none",
-//   },
-//   error: false,
-//   success: false,
-//   disabled: false,
-// };
+SoftInput.defaultProps = {
+  size: "medium",
+  icon: {
+    component: false,
+    direction: "none",
+  },
+  error: false,
+  success: false,
+  disabled: false,
+};
 
 // Typechecking props for the SoftInput
 SoftInput.propTypes = {

@@ -39,6 +39,7 @@ Coded by www.creative-tim.com
 import Dashboard from "layouts/dashboard";
 import CreateTenantUser from "layouts/manage-users";
 import CreateTenantGateway from "layouts/gateway-actions";
+import VerifyKB from "layouts/kb-verification";
 import Tables from "layouts/tables";
 import Billing from "layouts/billing";
 import VirtualReality from "layouts/virtual-reality";
@@ -71,6 +72,7 @@ const routes = [
     icon: <CustomerSupport size="12px" />,
     component: <Profile />,
     noCollapse: true,
+    allowedRoles: ["Super User", "Tenant Admin", "User"],
   },
   // {
   //   type: "collapse",
@@ -93,19 +95,7 @@ const routes = [
       </ProtectedRoute>
     ),
     noCollapse: true,
-  },
-  {
-    type: "collapse",
-    name: "WSUS Connection",
-    key: "WSUS Connector",
-    route: "/wsus-connector",
-    icon: <Settings size="12px" />,
-    component:(
-      <ProtectedRoute>
-        <WsusConnectorform />
-      </ProtectedRoute>
-    ),
-    noCollapse: true,
+    allowedRoles: ["Super User"],
   },
   {
     type: "collapse",
@@ -119,21 +109,9 @@ const routes = [
       </ProtectedRoute>
     ),
     noCollapse: true,
+    allowedRoles: ["Tenant Admin"],
   },
-  {
-    type: "collapse",
-    name: "KB Verification",
-    key: "KB Verification",
-    route: "/kb-verification",
-    icon: <Settings size="12px" />,
-    component:(
-      <ProtectedRoute>
-        <WsusConnectorform />
-      </ProtectedRoute>
-    ),
-    noCollapse: true,
-  },
-  {
+    {
     type: "collapse",
     name: "Gateway Actions",
     key: "Gateway Actions",
@@ -145,6 +123,35 @@ const routes = [
       </ProtectedRoute>
     ),
     noCollapse: true,
+    allowedRoles: ["Tenant Admin"],
+  },
+  {
+    type: "collapse",
+    name: "WSUS Connection",
+    key: "WSUS Connector",
+    route: "/wsus-connector",
+    icon: <Settings size="12px" />,
+    component:(
+      <ProtectedRoute>
+        <WsusConnectorform />
+      </ProtectedRoute>
+    ),
+    noCollapse: true,
+    allowedRoles: ["Tenant Admin"],
+  },
+  {
+    type: "collapse",
+    name: "KB Verification",
+    key: "KB Verification",
+    route: "/kb-verification",
+    icon: <Settings size="12px" />,
+    component:(
+      <ProtectedRoute>
+        <VerifyKB />
+      </ProtectedRoute>
+    ),
+    noCollapse: true,
+    allowedRoles: ["Tenant Admin"],
   },
   {
     type: "collapse",
@@ -158,6 +165,7 @@ const routes = [
       </ProtectedRoute>
     ),
     noCollapse: true,
+    allowedRoles: ["User","Tenant Admin"],
   },
   
   

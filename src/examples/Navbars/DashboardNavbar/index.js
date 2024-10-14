@@ -179,6 +179,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                     onClick={() => {
                       localStorage.removeItem("accessToken");
                       localStorage.removeItem("refreshToken");
+                      localStorage.removeItem("userRole");
                       navigate("/authentication/sign-in");
                     }}
                   >

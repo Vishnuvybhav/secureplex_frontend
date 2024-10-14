@@ -26,7 +26,7 @@ function SignIn() {
     const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
       // If token exists, redirect to the dashboard
-      navigate("/dashboard");
+      navigate("/profile");
     }
   }, [navigate]);
 
@@ -43,11 +43,21 @@ function SignIn() {
 
       if (response.status === 200) {
         // Save the access and refresh tokens
+        console.log(response.data, "user login data");
+        
         localStorage.setItem("accessToken", response.data.access);
+        
+        localStorage.setItem("userName", response.data.data.name);
+        localStorage.setItem("userEmail", response.data.data.email);
+        localStorage.setItem("userPhone", response.data.data.phone);
+        localStorage.setItem("userGender", response.data.data.gender  === "M" ? "Male" : "Female");
+
+        const userRole = response.data.data.role[0].name;
+        localStorage.setItem("userRole", userRole);
         // localStorage.setItem("refreshToken", response.data.refresh);
 
         // Redirect to /redirect on successful login
-        navigate("/redirect");
+        navigate("/profile");
       } else {
         // Handle other status codes (e.g., 401 Unauthorized)
         // toast.error("Invalid email or password.");
@@ -56,6 +66,7 @@ function SignIn() {
     } catch (error) {
       // Set the error message on failure
       // toast.error("Invalid email or password.");
+      console.error("Error:", error);
       setError("Invalid email or password.");
     }
   };

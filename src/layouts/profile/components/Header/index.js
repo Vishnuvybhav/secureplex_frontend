@@ -1,18 +1,3 @@
-/**
-=========================================================
-* Soft UI Dashboard React - v4.0.1
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { useState, useEffect } from "react";
 
 // @mui material components
@@ -25,7 +10,6 @@ import Tab from "@mui/material/Tab";
 // Soft UI Dashboard React components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
-import SoftAvatar from "components/SoftAvatar";
 
 // Soft UI Dashboard React examples
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
@@ -33,21 +17,43 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 // Soft UI Dashboard React icons
 import Cube from "examples/Icons/Cube";
 import Document from "examples/Icons/Document";
-import Settings from "examples/Icons/Settings";
 
 // Soft UI Dashboard React base styles
 import breakpoints from "assets/theme/base/breakpoints";
 
 // Images
-import burceMars from "assets/images/bruce-mars.jpg";
 import curved0 from "assets/images/curved-images/curved0.jpg";
 
 function Header() {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const [tabValue, setTabValue] = useState(0);
+  const [userDetails, setUserDetails] = useState({
+    fullName: "",
+    mobile: "",
+    email: "",
+    gender: "",
+    role: "", // Role retrieved from localStorage
+  });
+
+  // Retrieve user details from localStorage on component mount
+  useEffect(() => {
+    const userName = localStorage.getItem("userName") || "N/A";
+    const userEmail = localStorage.getItem("userEmail") || "N/A";
+    const userPhone = localStorage.getItem("userPhone") || "N/A";
+    const userGender = localStorage.getItem("userGender") || "N/A";
+    const userRole = localStorage.getItem("userRole") || "N/A";
+
+    setUserDetails({
+      fullName: userName,
+      mobile: userPhone,
+      email: userEmail,
+      gender: userGender,
+      role: userRole,
+    });
+  }, []);
 
   useEffect(() => {
-    // A function that sets the orientation state of the tabs.
+    // A function that sets the orientation state of the tabs based on screen width.
     function handleTabsOrientation() {
       return window.innerWidth < breakpoints.values.sm
         ? setTabsOrientation("vertical")
@@ -102,21 +108,15 @@ function Header() {
       >
         <Grid container spacing={1} alignItems="center">
           <Grid item>
-            {/* <SoftAvatar
-              src={burceMars}
-              alt="profile-image"
-              variant="rounded"
-              size="xl"
-              shadow="sm"
-            /> */}
+            {/* Optionally, you can add an avatar here if needed */}
           </Grid>
           <Grid item>
             <SoftBox height="100%" mt={0.5} lineHeight={1}>
               <SoftTypography variant="h5" fontWeight="medium">
-                UserName
+                {userDetails.fullName}
               </SoftTypography>
               <SoftTypography variant="button" color="text" fontWeight="medium">
-                Role
+                {userDetails.role}
               </SoftTypography>
             </SoftBox>
           </Grid>
