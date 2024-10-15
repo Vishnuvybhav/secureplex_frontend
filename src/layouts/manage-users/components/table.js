@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "AxiosInstance"; // Import your Axios instance
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, Select, MenuItem, Grid, Alert } from "@mui/material";
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button, Select, MenuItem, Grid, Alert, Switch, FormControlLabel } from "@mui/material";
 import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
 import SoftInput from "components/SoftInput";
@@ -50,7 +50,10 @@ function TenantUsersTable() {
   // Handle opening the modal with user data
   const handleEditClick = (user) => {
     setSelectedUser(user); // Set the selected user's data for editing
-    setEditedUser({ ...user }); // Create a copy of the user data for editing
+    setEditedUser({ 
+      ...user, 
+      role: user.role?.[0]?.name || "" // Extract the role name for Select input
+    }); // Create a copy of the user data for editing
     setOpen(true); // Open the modal
   };
 
@@ -65,15 +68,12 @@ function TenantUsersTable() {
   const handleSave = async () => {
     if (!editedUser) return;
 
-    // Convert the gender values to "male" or "female" before sending to the server
-    const genderValue = editedUser.gender === "M" ? "male" : "female";
-
     const updatedFields = {
       name: editedUser.name,
-      email: editedUser.email,
       phone: editedUser.phone,
-      gender: genderValue,  // Send the full form of gender ("male"/"female")
+      role: [{ name: editedUser.role }], // Convert role back to array
       country_code: editedUser.country_code,
+      is_active: editedUser.is_active, // Include the active state
     };
 
     try {
@@ -102,14 +102,11 @@ function TenantUsersTable() {
     Email: user.email || "N/A",
     Phone: user.phone || "N/A",
     Role: user.role?.[0]?.name || "N/A", // Assuming roles is an array
-    Gender: user.gender === "M" ? "Male" : user.gender === "F" ? "Female" : "N/A",
+    IsActive: user.is_active ? "Active" : "Not Active",
     action: (
       <SoftBox display="flex" justifyContent="center" gap={1}>
         <SoftButton color="secondary" variant="gradient" onClick={() => handleEditClick(user)}>
           Edit
-        </SoftButton>
-        <SoftButton color="error" variant="gradient">
-          Delete
         </SoftButton>
       </SoftBox>
     ),
@@ -127,11 +124,11 @@ function TenantUsersTable() {
       {/* User Table */}
       <Table
         columns={[
-          { name: "Name", align: "left" },
-          { name: "Email", align: "left" },
+          { name: "Name", align: "center" },
+          { name: "Email", align: "center" },
           { name: "Phone", align: "center" },
           { name: "Role", align: "center" },
-          { name: "Gender", align: "center" },
+          { name: "IsActive", align: "center" },
           { name: "action", align: "center" },
         ]}
         rows={rows}
@@ -155,17 +152,6 @@ function TenantUsersTable() {
                 />
               </SoftBox>
               <SoftBox mb={3}>
-                <SoftInput
-                  name="email"
-                  placeholder="Email"
-                  icon={{ component: <Icon>email</Icon>, direction: "left" }}
-                  size="medium"
-                  value={editedUser.email}
-                  onChange={(e) => setEditedUser({ ...editedUser, email: e.target.value })}
-                  required
-                />
-              </SoftBox>
-              <SoftBox mb={3}>
                 <PhoneInput
                   country={editedUser?.country_code || "us"}
                   value={editedUser?.phone || ""}
@@ -182,19 +168,29 @@ function TenantUsersTable() {
               <SoftBox>
                 <FormControl fullWidth>
                   <Select
-                    label="Gender"
-                    value={editedUser.gender || ""}
-                    onChange={(e) => setEditedUser({ ...editedUser, gender: e.target.value })}
+                    label="User Role"
+                    value={editedUser.role || ""} // Use string value of role
+                    onChange={(e) => setEditedUser({ ...editedUser, role: e.target.value })}
                     displayEmpty
                   >
                     <MenuItem value="">
-                      <em>Select Gender</em>
+                      <em>Select Role</em>
                     </MenuItem>
-                    {/* Display "Male" and "Female" but use "M" and "F" internally */}
-                    <MenuItem value="M">Male</MenuItem>
-                    <MenuItem value="F">Female</MenuItem>
+                    <MenuItem value="Tenant Analyst">Tenant Analyst</MenuItem>
+                    <MenuItem value="User">User</MenuItem>
                   </Select>
                 </FormControl>
+              </SoftBox>
+              <SoftBox pl={2} mt={2}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={!!editedUser.is_active}
+                      onChange={(e) => setEditedUser({ ...editedUser, is_active: e.target.checked })}
+                    />
+                  }
+                  label={editedUser.is_active ? "Active" : "Inactive"}
+                />
               </SoftBox>
             </>
           )}

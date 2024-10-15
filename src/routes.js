@@ -62,6 +62,7 @@ import SpaceShip from "examples/Icons/SpaceShip";
 import CustomerSupport from "examples/Icons/CustomerSupport";
 import CreditCard from "examples/Icons/CreditCard";
 import Cube from "examples/Icons/Cube";
+import TenantDashboard from "layouts/tenant-dashboard";
 
 const routes = [
   {
@@ -72,7 +73,7 @@ const routes = [
     icon: <CustomerSupport size="12px" />,
     component: <Profile />,
     noCollapse: true,
-    allowedRoles: ["Super User", "Tenant Admin", "User"],
+    allowedRoles: ["Tenant Admin", "User", "Tenant Analyst"],
   },
   // {
   //   type: "collapse",
@@ -151,7 +152,7 @@ const routes = [
       </ProtectedRoute>
     ),
     noCollapse: true,
-    allowedRoles: ["Tenant Admin"],
+    allowedRoles: ["Tenant Admin","Tenant Analyst"],
   },
   {
     type: "collapse",
@@ -161,7 +162,7 @@ const routes = [
     icon: <Cube size="12px" />,
     component:(
       <ProtectedRoute>
-        <WsusConnectorform />
+        <TenantDashboard />
       </ProtectedRoute>
     ),
     noCollapse: true,

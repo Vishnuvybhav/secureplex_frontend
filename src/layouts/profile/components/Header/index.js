@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import axiosInstance from "AxiosInstance.js"; // Use axiosInstance for API requests
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -6,6 +7,15 @@ import Grid from "@mui/material/Grid";
 import AppBar from "@mui/material/AppBar";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import Button from "@mui/material/Button";
+import Icon from "@mui/material/Icon";
+import SoftInput from "components/SoftInput";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 // Soft UI Dashboard React components
 import SoftBox from "components/SoftBox";
@@ -26,13 +36,15 @@ import curved0 from "assets/images/curved-images/curved0.jpg";
 
 function Header() {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
-  const [tabValue, setTabValue] = useState(0);
+  const [tabValue, setTabValue] = useState(1); // Set initial value to something other than 0
+  const [dialogOpen, setDialogOpen] = useState(false);
   const [userDetails, setUserDetails] = useState({
     fullName: "",
-    mobile: "",
+    phone: "",
     email: "",
     gender: "",
-    role: "", // Role retrieved from localStorage
+    role: "",
+    country_code: "",
   });
 
   // Retrieve user details from localStorage on component mount
@@ -45,7 +57,7 @@ function Header() {
 
     setUserDetails({
       fullName: userName,
-      mobile: userPhone,
+      phone: userPhone,
       email: userEmail,
       gender: userGender,
       role: userRole,
@@ -53,26 +65,51 @@ function Header() {
   }, []);
 
   useEffect(() => {
-    // A function that sets the orientation state of the tabs based on screen width.
     function handleTabsOrientation() {
       return window.innerWidth < breakpoints.values.sm
         ? setTabsOrientation("vertical")
         : setTabsOrientation("horizontal");
     }
 
-    /** 
-     The event listener that's calling the handleTabsOrientation function when resizing the window.
-    */
     window.addEventListener("resize", handleTabsOrientation);
-
-    // Call the handleTabsOrientation function to set the state with the initial value.
     handleTabsOrientation();
 
-    // Remove event listener on cleanup
     return () => window.removeEventListener("resize", handleTabsOrientation);
   }, [tabsOrientation]);
 
-  const handleSetTabValue = (event, newValue) => setTabValue(newValue);
+  const handleSetTabValue = (event, newValue) => {
+    setTabValue(newValue);
+    if (newValue === 0) {
+      setDialogOpen(true); // Open the dialog when "Edit Profile" is clicked
+    }
+  };
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  };
+
+  // Handle form submission with a PATCH request using axiosInstance
+  const handleFormSubmit = async () => {
+    const userId = localStorage.getItem("userId"); // Assume user ID is stored in localStorage
+    const updatedData = {
+      name: userDetails.fullName,
+      phone: userDetails.phone,
+      country_code: userDetails.country_code,
+    };
+
+    try {
+      console.log("User data to be sent:", updatedData);
+      const response = await axiosInstance.patch(`/user/profile/${userId}/`, updatedData);
+      console.log("User updated successfully!", response.data);
+      localStorage.setItem("userName", response.data.data[0].name);
+      localStorage.setItem("userPhone", response.data.data[0].phone);
+      // Handle success, maybe show a success message
+      setDialogOpen(false);
+    } catch (error) {
+      // Handle error, show an error message
+      console.error("Failed to update user details", error);
+    }
+  };
 
   return (
     <SoftBox position="relative">
@@ -135,6 +172,46 @@ function Header() {
           </Grid>
         </Grid>
       </Card>
+
+      {/* Edit Profile Dialog */}
+      <Dialog open={dialogOpen} onClose={handleDialogClose} maxWidth="sm" fullWidth>
+        <DialogTitle>Edit Profile</DialogTitle>
+        <DialogContent>
+          <SoftBox mb={3} mr={3} mt={1}>
+            <SoftInput
+              name="name"
+              placeholder="Name"
+              icon={{ component: <Icon>person</Icon>, direction: "left" }}
+              size="medium"
+              value={userDetails.fullName}
+              onChange={(e) => setUserDetails({ ...userDetails, fullName: e.target.value })}
+              required
+            />
+          </SoftBox>
+          <SoftBox mr={3}>
+            <PhoneInput
+              country={userDetails?.country_code || "us"}
+              value={userDetails?.phone || ""}
+              onChange={(phone, countryData) =>
+                setUserDetails({
+                  ...userDetails,
+                  phone,
+                  country_code: countryData.countryCode,
+                })
+              }
+              inputStyle={{ width: "100%" }}
+            />
+          </SoftBox>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDialogClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleFormSubmit} color="primary">
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
     </SoftBox>
   );
 }

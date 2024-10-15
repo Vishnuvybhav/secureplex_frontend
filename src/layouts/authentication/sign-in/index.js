@@ -1,11 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "AxiosInstance.js"; // Import the axios instance
-import { toast } from "react-toastify"; // Import toast
 
 // Material UI components
-import Switch from "@mui/material/Switch";
-import SoftAlert from "components/SoftAlert";
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import SoftInput from "components/SoftInput";
@@ -46,36 +43,34 @@ function SignIn() {
         console.log(response.data, "user login data");
         
         localStorage.setItem("accessToken", response.data.access);
-        
+        localStorage.setItem("userId", response.data.data.id);
         localStorage.setItem("userName", response.data.data.name);
         localStorage.setItem("userEmail", response.data.data.email);
         localStorage.setItem("userPhone", response.data.data.phone);
-        localStorage.setItem("userGender", response.data.data.gender  === "M" ? "Male" : "Female");
 
         const userRole = response.data.data.role[0].name;
         localStorage.setItem("userRole", userRole);
-        // localStorage.setItem("refreshToken", response.data.refresh);
-
-        // Redirect to /redirect on successful login
         navigate("/profile");
-      } else {
-        // Handle other status codes (e.g., 401 Unauthorized)
-        // toast.error("Invalid email or password.");
-        setError("Invalid email or password.");
       }
     } catch (error) {
-      // Set the error message on failure
-      // toast.error("Invalid email or password.");
       console.error("Error:", error);
-      setError("Invalid email or password.");
+      // If the error response has a message field, set it as the error message
+      if (error.response && error.response.data && error.response.data.message) {
+        setError(error.response.data.message); // Extract the message from the response
+      } else {
+        // Set a generic error message if the specific message is not available
+        setError("Invalid email or password.");
+      }
+      console.error("Error:", error);
     }
   };
 
   return (
     <CoverLayout title="Welcome back" image={curved9}>
       <SoftBox component="form" role="form" onSubmit={handleSubmit}>
-        {/* {error && <SoftAlert severity="error" color="error" dismissible="true">{error}</SoftAlert>} */}
+        {/* Display error message if any */}
         {error && <Alert severity="error">{error}</Alert>}
+
         <SoftBox mb={2}>
           <SoftBox mb={1} ml={0.5}>
             <SoftTypography component="label" variant="caption" fontWeight="bold">
@@ -105,35 +100,12 @@ function SignIn() {
           />
         </SoftBox>
         <SoftBox display="flex" alignItems="center">
-          {/* <Switch checked={rememberMe} onChange={handleSetRememberMe} />
-          <SoftTypography
-            variant="button"
-            fontWeight="regular"
-            onClick={handleSetRememberMe}
-            sx={{ cursor: "pointer", userSelect: "none" }}
-          >
-            &nbsp;&nbsp;Remember me
-          </SoftTypography> */}
+          {/* Add a switch for Remember Me if needed */}
         </SoftBox>
         <SoftBox mt={4} mb={1}>
           <SoftButton type="submit" variant="gradient" color="info" fullWidth>
             Sign In
           </SoftButton>
-        </SoftBox>
-        <SoftBox mt={3} textAlign="center">
-          {/* <SoftTypography variant="button" color="text" fontWeight="regular">
-            Don&apos;t have an account?{" "}
-            <SoftTypography
-              component={Link}
-              to="/authentication/sign-up"
-              variant="button"
-              color="info"
-              fontWeight="medium"
-              textGradient
-            >
-              Sign up
-            </SoftTypography>
-          </SoftTypography> */}
         </SoftBox>
       </SoftBox>
     </CoverLayout>

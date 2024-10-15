@@ -17,7 +17,7 @@ import Header from "layouts/profile/components/Header";
 function Overview() {
   // State to store user details
   const [userDetails, setUserDetails] = useState({
-    fullName: "",
+    Name: "",
     mobile: "",
     email: "",
     gender: "", // Default location if not available in localStorage
@@ -32,7 +32,7 @@ function Overview() {
 
     // Set the user details to state
     setUserDetails({
-      fullName: userName,
+      Name: userName,
       mobile: userPhone,
       email: userEmail,
       gender: userGender, // You can update this if needed
@@ -48,10 +48,9 @@ function Overview() {
             <ProfileInfoCard
               title="profile information"
               info={{
-                fullName: userDetails.fullName,
+                Name: userDetails.Name,
                 mobile: userDetails.mobile,
                 email: userDetails.email,
-                gender: userDetails.gender,
               }}
               action={{ route: "", tooltip: "Edit Profile" }}
             />

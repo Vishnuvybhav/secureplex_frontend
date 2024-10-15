@@ -49,18 +49,23 @@ function CreateProfile() {
     const userData = {
       name: name,
       email: email,
-      gender: gender === 10 ? 'male' : 'female',
       phone: phone,
       country_code: countryCode,
       role: role,
     };
 
     // Make POST request using axiosInstance
+    console.log("User data:", userData);  
     axiosInstance.post("/user/create/", userData)
       .then((response) => {
         setMessage("Profile created successfully!");
         setAlertType('success');
         console.log("Response:", response.data);
+        setName('');
+        setEmail('');
+        setPhone('');
+        setCountryCode('us');
+        setRole('');
       })
       .catch((error) => {
         setMessage("Error creating profile. Please try again.");
@@ -139,31 +144,11 @@ function CreateProfile() {
                           <MenuItem value="">
                             <span style={{ color: '#A9A9A9' }}>Role</span>
                           </MenuItem>
-                          <MenuItem value="Analyst">Analyst</MenuItem>
-                          <MenuItem value="user">General User</MenuItem>
+                          <MenuItem value="Tenant Analyst">Tenant Analyst</MenuItem>
+                          <MenuItem value="User">User</MenuItem>
                         </Select>
                       </FormControl>
                     </Grid>
-                    <Grid item xs={12} md={6}>
-                    <FormControl fullWidth>
-                      <Select
-                          value={gender}
-                          onChange={(e) => setGender(e.target.value)}
-                          displayEmpty
-                          input={<OutlinedInput startAdornment={<Icon sx={{ fontSize: 50 }}>wc</Icon>} />}
-                        >
-                          <MenuItem value="">
-                            <span style={{ color: '#A9A9A9' }}>Gender</span>
-                          </MenuItem>
-                          <MenuItem value={10}>Male</MenuItem>
-                          <MenuItem value={20}>Female</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Grid>
-                  </Grid>
-
-                  {/* Third Row: Phone Input */}
-                  <Grid container spacing={2} mt={2}>
                     <Grid item xs={12} md={6}>
                       <PhoneInput
                           country={countryCode}  // Set the default country

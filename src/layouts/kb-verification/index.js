@@ -17,7 +17,7 @@ function VerifyKB() {
       <SoftBox justifyContent="center" alignItems="center" mb={3} mt={2}>
         <Grid >
          {/* <CreateProfile></CreateProfile> */}
-         {/* <h1>hii w</h1> */}
+         <h3>KB Verification</h3>
         </Grid>
       </SoftBox>
       <SoftBox mb={3}>
