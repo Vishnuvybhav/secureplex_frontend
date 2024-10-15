@@ -27,6 +27,8 @@
     "chart.js": "3.9.1",
     "chroma-js": "2.4.2",
     "classnames": "^2.5.1",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.4.5",
     "primereact": "^10.8.3",
     "prop-types": "15.8.1",
     "react": "^18.3.1",
@@ -44,12 +46,10 @@
     "web-vitals": "3.3.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "cross-env REACT_APP_ENVIRONMENT=development react-scripts start",
+    "build": "cross-env REACT_APP_ENVIRONMENT=production react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start",
-    "install:peer-deps": "npm install --legacy-peer-deps"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
